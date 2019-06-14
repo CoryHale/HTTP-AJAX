@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 
@@ -43,11 +41,22 @@ class App extends React.Component {
       })
   }
 
+  editHandler = (e, id, friendEdit) => {
+    e.preventDefault();
+
+    axios.put(`http://localhost:5000/friends/${id}`, friendEdit)
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+        this.setState({ friends: res.data })
+      })
+  }
+
   render() {
     return (
       <div className="App">
         {this.state.errorMessage && <h3>error: {this.state.errorMessage}</h3>}
-        <FriendsList friends={this.state.friends} deleteHandler={this.deleteHandler} />
+        <FriendsList friends={this.state.friends} deleteHandler={this.deleteHandler} editHandler={this.editHandler} />
         <NewFriendForm submitHandler={this.submitHandler} />
       </div>
     );
